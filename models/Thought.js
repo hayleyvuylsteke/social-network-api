@@ -15,7 +15,7 @@ const ThoughtSchema = new Schema({
   });
 
 // create the User model using the UserSchema
-const User = model('User', UserSchema);
+const Thought = model('Thought', ThoughtSchema);
 
 // export the User model
-module.exports = User;
+module.exports = Thought;
