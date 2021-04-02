@@ -11,10 +11,6 @@ const UserSchema = new Schema({
       type: Date,
       default: Date.now
     },
-    size: {
-      type: String,
-      default: 'Large'
-    },
     thoughts: [],
     friends: []
   });
