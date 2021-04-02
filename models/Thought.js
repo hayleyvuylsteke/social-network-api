@@ -1,18 +1,59 @@
 const { Schema, model } = require('mongoose');
+const moment = require('moment');
+const ObjectId = mongoose.Types.ObjectId;
+
+
+const ReactionSchema = new Schema({
+  reactionID: {
+    type: Schema.Types.ObjectId,
+    default: new ObjectId()
+  },
+  reactionBody: {
+    type: String,
+    required: true,
+    maxLength: 280
+  },
+  username: { 
+    type: Schema.Types.ObjectId, ref: 'User'
+    //extra step on the find route to get the user name
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    get: formatDate
+  },
+})
 
 const ThoughtSchema = new Schema({
     thoughtText: {
-      type: String
+      type: String,
+      required: true,
+      minLength: 1,
+      maxLength: 280
     },
+
     createdAt: {
       type: Date,
-      default: Date.now
+      default: Date.now,
+      get: formatDate
     },
-    username: {
-      type: String,
+    username: { 
+      type: Schema.Types.ObjectId, ref: 'User'
+      //extra step on the find route to get the user name
+      
     },
+    reactions: [ReactionSchema]
 //need to add reactions
   });
+
+function formatDate(date) {
+  return moment.unix(date).format('MMMM DD, YYYY') // format the date with something like moment
+}
+
+ThoughtSchema.virtual('reactionCount').get(function() {
+  return this.reactions.length
+})
+
 
 // create the User model using the UserSchema
 const Thought = model('Thought', ThoughtSchema);
