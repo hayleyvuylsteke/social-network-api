@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "social-network-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hayleyvuylsteke/social-network-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hayleyvuylsteke/social-network-api/issues"
+  },
+  "homepage": "https://github.com/hayleyvuylsteke/social-network-api#readme",
+  "description": ""
+}
