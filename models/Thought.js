@@ -42,12 +42,16 @@ const ThoughtSchema = new Schema({
       //extra step on the find route to get the user name
       
     },
-    reactions: [ReactionSchema]
-//need to add reactions
+    reactions: [ReactionSchema],
+     toJSON: {
+        virtuals: true,
+      },
+      id: false
+    
   });
 
 function formatDate(date) {
-  return moment.unix(date).format('MMMM DD, YYYY') // format the date with something like moment
+  return moment.unix(date).format('MMMM DD, YYYY')
 }
 
 ThoughtSchema.virtual('reactionCount').get(function() {
