@@ -1,25 +1,61 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
+//get thoughts
+
+getThought(req, res) {
+    Thought.find({})
+    .then(dbThoughtData => {
+        if (!dbThoughtData) {
+            res.status(404).json({ message: 'No thoughts found.'})
+            return
+        }
+        res.json(dbThoughtData)
+    })
+    .catch(err => res.json(err))
+},
+
+//get thought by ID
+
+getThoughtById({params}, res) {
+    Thought.findOne({_id: params.ThoughtId})
+    .then(dbThoughtData => {
+        if (!dbThoughtData) {
+            res.status(404).json({ message: 'No thought found with this id.'})
+            return
+        }
+        res.json(dbThoughtData)
+    })
+    .catch(err => res.status(400).json(err))
+},
+
   // add thought
   addThought({ params, body }, res) {
-      console.log(body);
       Thought.create(body)
-      .then(({ _id }) => {
-      return User.findOneAndUpdate(
-          {_id: params.userId},
+      .then(async ({ _id }) => {
+          console.log('ThoughtId:' + _id)
+        const user = await User.findOne({ _id: params.userId });
+        console.log(user)
+        user.thoughts.push(_id);
+        return user.save();
+
+
+      /*return User.update(
+          { _id: params.userId },
           { $push: { thoughts: _id } },
-          { new: true}
-      )
+      )*/
       })
       .then(dbUserData => {
           if (!dbUserData) {
               res.status(404).json({ message: 'No user found with this id.'})
-              return
+              return;
           }
           res.json(dbUserData)
       })
-      .catch(err => res.json(err))
+      .catch(err => {
+          console.log(err);
+          res.json(err);
+      })
     },
 
   //edit thought - not sure this is right.

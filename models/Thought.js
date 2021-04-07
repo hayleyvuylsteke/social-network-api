@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const moment = require('moment');
-const ObjectId = mongoose.Types.ObjectId;
+const ObjectId = Types.ObjectId;
 
 
 const ReactionSchema = new Schema({
@@ -43,12 +43,15 @@ const ThoughtSchema = new Schema({
       
     },
     reactions: [ReactionSchema],
-     toJSON: {
-        virtuals: true,
-      },
-      id: false
     
-  });
+  },
+  {
+    toJSON: {
+      virtuals: true,
+    },
+    id: false
+  }
+  );
 
 function formatDate(date) {
   return moment.unix(date).format('MMMM DD, YYYY')
