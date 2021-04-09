@@ -69,6 +69,23 @@ getThoughtById({params}, res) {
       })
     },
 
+    //add reaction
+    addReaction({ params, body}, res) {
+        Thought.findOneAndUpdate(
+          {_id: params.thoughtId},
+          {$push: { reaction: body}},
+          { new: true }
+        )
+        .then(dbThoughtData => {
+          if (!dbThoughtData) {
+            res.status(404).json({ message: 'No thought found with this id!'})
+            return
+          }
+          res.json(dbThoughtData);
+        })
+        .catch(err => res.json(err))
+      },
+
   //edit thought - not sure this is right.
   editThought({ params, body }, res) {
     Thought.findOneAndUpdate(body)(
@@ -107,6 +124,17 @@ getThoughtById({params}, res) {
           res.json(dbUserData)
       })
       .catch(err => res.json(err))
+    },
+
+    //remove reaction
+    removeReaction({params}, res) {
+        Thought.findOneAndUpdate(
+            { _id: params.thoughtId },
+            { $pull: { reaction: { reactionId: params.reactionId}}},
+            {new:true}
+        )
+        .then(dbThoughtData => res.json(dbThoughtData))
+        .catch(err => res.json(err))
     }
 };
 
