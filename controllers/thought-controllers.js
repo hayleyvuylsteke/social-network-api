@@ -24,7 +24,7 @@ getThought(req, res) {
 //get thought by ID
 
 getThoughtById({params}, res) {
-    Thought.findOne({_id: params.ThoughtId})
+    Thought.findOne({_id: params.thoughtId})
     .populate({
         path: 'users',
         select: '-__v'
@@ -72,8 +72,8 @@ getThoughtById({params}, res) {
     //add reaction
     addReaction({ params, body}, res) {
         Thought.findOneAndUpdate(
-          {_id: params.thoughtId},
-          {$push: { reaction: body}},
+          { _id: params.thoughtId},
+          {$push: { reactions: body}},
           { new: true }
         )
         .then(dbThoughtData => {
@@ -88,11 +88,7 @@ getThoughtById({params}, res) {
 
   //edit thought - not sure this is right.
   editThought({ params, body }, res) {
-    Thought.findOneAndUpdate(body)(
-        { _id: params.thoughtId},
-        { $push: { thoughts: _id } },
-        { new: true}
-    )
+    Thought.findOneAndUpdate({_id: params.thoughtId}, body, {new:true})
     .then(updatedThought => {
         if (!updatedThought) {
             res.status(404).json({ message: 'No thought with this id.'})
@@ -130,7 +126,7 @@ getThoughtById({params}, res) {
     removeReaction({params}, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
-            { $pull: { reaction: { reactionId: params.reactionId}}},
+            { $pull: { reactions: { reactionId: params.reactionId}}},
             {new:true}
         )
         .then(dbThoughtData => res.json(dbThoughtData))
