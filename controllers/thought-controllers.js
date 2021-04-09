@@ -49,12 +49,6 @@ getThoughtById({params}, res) {
         console.log(user)
         user.thoughts.push(_id);
         return user.save();
-
-
-      /*return User.update(
-          { _id: params.userId },
-          { $push: { thoughts: _id } },
-      )*/
       })
       .then(dbUserData => {
           if (!dbUserData) {
