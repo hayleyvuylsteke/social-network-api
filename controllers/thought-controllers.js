@@ -120,9 +120,16 @@ getThoughtById({params}, res) {
     removeReaction({params}, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
-            { $pull: { reactions: { reactionId: params.reactionId}}},
-            {new:true}
+            {
+                $pull: {
+                    reactions: {
+                        reactionID: params.reactionId
+                    }
+                },
+            },
+            {safe:true}
         )
+        .then(() => Thought.findOne({ _id: params.thoughtId }))
         .then(dbThoughtData => res.json(dbThoughtData))
         .catch(err => res.json(err))
     }

@@ -25,7 +25,10 @@ const ReactionSchema = new Schema({
   },
   {
     toJSON: {
-      getters: true
+      getters: true,
+      transform: function(doc, ret) {
+        delete ret._id
+      }
     },
     id: false
   }
@@ -61,7 +64,7 @@ const ThoughtSchema = new Schema({
   );
 
 function formatDate(date) {
-  return moment.unix(date).format('MMMM DD, YYYY')
+  return moment(date).format('MMMM DD, YYYY')
 }
 
 ThoughtSchema.virtual('reactionCount').get(function() {
